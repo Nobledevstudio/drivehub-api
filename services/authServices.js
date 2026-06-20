@@ -57,6 +57,7 @@ export const loginUser = async ({ email, password }) => {
 
   // Find the user in the database based on the provided email
   const user = await userModel.findOne({ email })
+  
   if (!user) {
     throw new Error('Invalid Credentials')
   }

@@ -5,7 +5,7 @@ export const registerController = async (req, res) => {
 
       try {
          const data = req.body
-            const { user, token } = await loginUser(data)
+            const { user, token } = await registerUser(data)
             return res.status(201).json({
                   success: true,
                   user,
