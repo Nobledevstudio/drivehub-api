@@ -1,29 +1,30 @@
+import carModel from "../models/carModel.js";
 import bookingModel from "../models/bookingModel.js";
 import userModel from "../models/userModel.js";
+import purchaseModel from "../models/PurchaseModel.js";
 
+export const getAllBookingsForAdmin = (user) => {
 
-export const getAllBookingsForAdmin=(user)=>{
- 
   if (user.role === "admin") {
     return bookingModel.find({})
       .populate("car")
       .populate("user", "name email")
       .sort({ createdAt: -1 });
   }
-  
+
 }
 
-export const getUsers = async(user)=>{
+export const getUsers = async (user) => {
 
-   if(user.role !== "admin"){
-     throw new Error("Not anuthorized")
-   }
-
-  const users = await userModel.find({role :{$in : ['customer', "dealer"]}});
-
-   return users
-
+  if (user.role !== "admin") {
+    throw new Error("Not anuthorized")
   }
+
+  const users = await userModel.find({ role: { $in: ['customer', "dealer"] } });
+
+  return users
+
+}
 export const deleteUser = async (id) => {
 
   const user = await userModel.findByIdAndDelete(id)
@@ -64,8 +65,25 @@ export const approveDealer = async (dealerId, user) => {
   }
 
   dealer.isApproved = true
-  
+
   await dealer.save()
 
   return dealer
+}
+
+export const getAdminDashboardStats = async () => {
+
+  const [cars, users, bookings, purchases] = await Promise.all([
+    carModel.countDocuments(),
+    userModel.countDocuments({ role: { $in: ['customer', 'dealer'] } }),
+    bookingModel.countDocuments(),
+    purchaseModel.countDocuments()
+  ])
+
+  return {
+    cars,
+    users,
+    bookings,
+    purchases,
+  };
 }

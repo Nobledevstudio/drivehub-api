@@ -1,4 +1,5 @@
 import { approveDealer, deleteUser, getAllBookingsForAdmin, getUsers } from "../services/adminServices.js";
+import { getAdminDashboardStats } from "../services/adminServices.js";
 
 export const getAllBookingsForAdminController = async(req,res)=>{
 
@@ -61,3 +62,21 @@ export const approveDealerController = async (req,res) => {
       }
        
 }
+
+export const fetchAdminDashboardStatsController = async (req, res) => {
+  try {
+    const stats = await getAdminDashboardStats();
+
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch dashboard statistics.",
+    });
+  }
+};
