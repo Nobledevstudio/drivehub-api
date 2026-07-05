@@ -8,7 +8,6 @@ const carSchema = new mongoose.Schema({
       price: {type: Number, required: true},
       description: {type: String},
       images: {type: String}, 
-      isSold: {type: Boolean, default: false},
       listingType: {type: String, enum: ['buy','rent', "both"] , default: 'both'},
       status: {type: String, enum: ["available", "reserved","rented", "sold"], default: "available"},
       dealer: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true}

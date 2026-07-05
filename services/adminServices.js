@@ -1,7 +1,7 @@
 import carModel from "../models/carModel.js";
 import bookingModel from "../models/bookingModel.js";
 import userModel from "../models/userModel.js";
-import purchaseModel from "../models/PurchaseModel.js";
+import purchaseModel from "../models/purchaseModel.js";
 
 export const getAllBookingsForAdmin = (user) => {
 
@@ -86,4 +86,52 @@ export const getAdminDashboardStats = async () => {
     bookings,
     purchases,
   };
+}
+
+export const getCarsStatus = async () => {
+  const [available, reserved, rented, sold] = await Promise.all([
+    carModel.countDocuments({ status: "available" }),
+    carModel.countDocuments({ status: "reserved" }),
+    carModel.countDocuments({ status: "rented" }),
+    carModel.countDocuments({ status: "sold" }),
+  ]);
+
+  return {
+    available,
+    reserved,
+    rented,
+    sold
+  };
+
+}
+
+export const getRecentActivities = async () => {
+  const [bookings, purchases, users] = await Promise.all([
+    bookingModel.find().sort({ createdAt: -1 }).limit(5),
+    purchaseModel.find().sort({ createdAt: -1 }).limit(5),
+    userModel.find().sort({ createdAt: -1 }).limit(5),
+  ]);
+
+
+  const activities = [
+    ...bookings.map((booking) => ({
+      type: "booking",
+      message: `New booking created`,
+      createdAt: booking.createdAt,
+    })),
+    ...purchases.map((purchase) => ({
+      type: "purchase",
+      message: `Vehicle purchased`,
+      createdAt: purchase.createdAt,
+    })),
+
+    ...users.map((user) => ({
+      type: "user",
+      message: `${user.name} joined DriveHub`,
+      createdAt: user.createdAt,
+    })),
+  ]
+
+  return activities.sort((a,b)=> b.createdAt - a.createdAt).slice(0, 5);
+
 }

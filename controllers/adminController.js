@@ -1,28 +1,28 @@
-import { approveDealer, deleteUser, getAllBookingsForAdmin, getUsers } from "../services/adminServices.js";
+import { approveDealer, deleteUser, getAllBookingsForAdmin, getCarsStatus, getRecentActivities, getUsers } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
 
-export const getAllBookingsForAdminController = async(req,res)=>{
+export const getAllBookingsForAdminController = async (req, res) => {
 
-    try {
+  try {
 
-        const bookings = await getAllBookingsForAdmin(req.user);
-        res.status(200).json({success: true, data: bookings})
+    const bookings = await getAllBookingsForAdmin(req.user);
+    res.status(200).json({ success: true, data: bookings })
 
-      }catch (error) {
-        console.error(error)
-        res.status(400).json({success: false , message: error.message})
-    }
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({ success: false, message: error.message })
+  }
 }
 
 
-export const getUsersController = async(req,res)=>{
-      try {
-            const users = await getUsers(req.user)
-            res.status(200).json({success: true, data: users})
-            
-      } catch (error) {
-            res.status(400).json({success: false ,  message: error.message })    
-      }
+export const getUsersController = async (req, res) => {
+  try {
+    const users = await getUsers(req.user)
+    res.status(200).json({ success: true, data: users })
+
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
+  }
 }
 
 export const deleteUserContoller = async (req, res) => {
@@ -46,21 +46,21 @@ export const deleteUserContoller = async (req, res) => {
 }
 
 
-export const approveDealerController = async (req,res) => {
-    
-      try {
-           
-         const dealerId = req.params.id
-       
-         await approveDealer(dealerId, req.user)
+export const approveDealerController = async (req, res) => {
 
-        res.status(200).json({success: true , message: "Dealer Sucessfully Approved"})
-            
-      } catch (error) {
+  try {
 
-             res.status(400).json({success: false ,  message: error.message })    
-      }
-       
+    const dealerId = req.params.id
+
+    await approveDealer(dealerId, req.user)
+
+    res.status(200).json({ success: true, message: "Dealer Sucessfully Approved" })
+
+  } catch (error) {
+
+    res.status(400).json({ success: false, message: error.message })
+  }
+
 }
 
 export const fetchAdminDashboardStatsController = async (req, res) => {
@@ -77,6 +77,42 @@ export const fetchAdminDashboardStatsController = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch dashboard statistics.",
+    });
+  }
+};
+
+export const fetchCarStatusController = async (req, res) => {
+  try {
+    const vehicleStatus = await getCarsStatus();
+
+    res.status(200).json({
+      success: true,
+      data: vehicleStatus,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch vehicle status.",
+    });
+  }
+};
+
+export const fetchRecentActivitiesController = async (req, res) => {
+  try {
+    const activities = await getRecentActivities();
+
+    res.status(200).json({
+      success: true,
+      data: activities,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch recent activities.",
     });
   }
 };

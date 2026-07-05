@@ -1,7 +1,7 @@
 import express from 'express'
 import { protect } from '../middleware/protect.js'
 import { authorizeRoles } from '../middleware/authorizeRole.js'
-import { approveDealerController, deleteUserContoller, fetchAdminDashboardStatsController, getAllBookingsForAdminController, getUsersController } from '../controllers/adminController.js'
+import { approveDealerController, deleteUserContoller, fetchCarStatusController, fetchAdminDashboardStatsController, getAllBookingsForAdminController, getUsersController, fetchRecentActivitiesController } from '../controllers/adminController.js'
 
 const adminRouter = express.Router()
 
@@ -10,5 +10,7 @@ adminRouter.get('/bookings', protect , authorizeRoles('admin'),getAllBookingsFor
 adminRouter.delete('/users/:id', protect, authorizeRoles('admin'), deleteUserContoller)
 adminRouter.patch('/users/approve-dealer/:id',protect, authorizeRoles('admin'), approveDealerController)
 adminRouter.get("/stats", protect, authorizeRoles('admin'), fetchAdminDashboardStatsController);
+adminRouter.get("/car-status", protect, authorizeRoles('admin'), fetchCarStatusController);
+adminRouter.get("/recent", protect, authorizeRoles('admin'), fetchRecentActivitiesController);
 
 export default adminRouter
