@@ -1,5 +1,6 @@
 import { approveDealer, deleteUser, getAllBookingsForAdmin, getCarsStatus, getRecentActivities, getUsers } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
+import { getRecentCars } from "../services/adminServices.js";
 
 export const getAllBookingsForAdminController = async (req, res) => {
 
@@ -113,6 +114,27 @@ export const fetchRecentActivitiesController = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch recent activities.",
+    });
+  }
+};
+
+export const getRecentCarsController = async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 5;
+
+    const cars = await getRecentCars(limit);
+
+    res.status(200).json({
+      success: true,
+      message: "Recent cars fetched successfully.",
+      cars,
+    });
+  } catch (error) {
+    console.error("Get Recent Cars Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch recent cars.",
     });
   }
 };

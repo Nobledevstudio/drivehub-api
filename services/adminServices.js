@@ -135,3 +135,10 @@ export const getRecentActivities = async () => {
   return activities.sort((a,b)=> b.createdAt - a.createdAt).slice(0, 5);
 
 }
+
+export const getRecentCars = (limit = 5) => {
+   
+  const recentCars = carModel.find().sort({ createdAt: -1 }).limit(limit).populate("dealer", "name email");
+
+  return recentCars
+}
