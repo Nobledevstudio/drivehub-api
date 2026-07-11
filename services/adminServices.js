@@ -142,3 +142,21 @@ export const getRecentCars = (limit = 5) => {
 
   return recentCars
 }
+
+
+export const getUserStats = async () => {
+   const [totalUsers, customers, dealers, admins ] = await Promise.all([
+     userModel.countDocuments(),
+     userModel.countDocuments({role: 'customer'}),
+     userModel.countDocuments({role: 'dealer'}),
+     userModel.countDocuments({role: 'admin'}),
+   ])    
+
+
+   return{
+     totalUsers,
+     customers,
+     dealers,
+     admins
+   }
+}
