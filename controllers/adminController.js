@@ -19,7 +19,7 @@ export const getAllBookingsForAdminController = async (req, res) => {
 export const getUsersController = async (req, res) => {
   try {
     const users = await getUsers(req.user)
-    res.status(200).json({ success: true, data: users })
+    res.status(200).json({ success: true, users})
 
   } catch (error) {
     res.status(400).json({ success: false, message: error.message })

@@ -34,7 +34,7 @@ export const registerUser = async ({ name, email, password, role }) => {
     email,
     password: hashedPassword,
     role: role || "customer", // Default role is "customer" if not provided
-    isApproved: role === "dealer" ? false : true, // dealer needs aprroval
+    status: role === "dealer" ? "pending" : "active", // dealer needs aprroval
   })
 
   // Generate a token for the newly registered user
@@ -47,7 +47,7 @@ export const registerUser = async ({ name, email, password, role }) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      isApproved: user.isApproved,
+      status: user.status,
     },
     token
   }

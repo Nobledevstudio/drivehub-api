@@ -15,16 +15,29 @@ export const getAllBookingsForAdmin = (user) => {
 }
 
 export const getUsers = async (user) => {
-
   if (user.role !== "admin") {
-    throw new Error("Not anuthorized")
+    throw new Error("Unauthorized");
   }
 
-  const users = await userModel.find({ role: { $in: ['customer', "dealer"] } });
+  const users = await userModel.find({
+    role: { $in: ["customer", "dealer"] },
+  })
+    .select("-password -__v").lean();
 
-  return users
+  const formattedUsers = users.map((user) => ({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    phone: user.phone ?? "",
+    status: user.isApproved ? "active" : "pending",
+    joinedDate: user.createdAt,
+  }));
 
-}
+  return formattedUsers;
+};
+
+
 export const deleteUser = async (id) => {
 
   const user = await userModel.findByIdAndDelete(id)
@@ -132,12 +145,12 @@ export const getRecentActivities = async () => {
     })),
   ]
 
-  return activities.sort((a,b)=> b.createdAt - a.createdAt).slice(0, 5);
+  return activities.sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
 
 }
 
 export const getRecentCars = (limit = 5) => {
-   
+
   const recentCars = carModel.find().sort({ createdAt: -1 }).limit(limit).populate("dealer", "name email");
 
   return recentCars
@@ -145,18 +158,18 @@ export const getRecentCars = (limit = 5) => {
 
 
 export const getUserStats = async () => {
-   const [totalUsers, customers, dealers, admins ] = await Promise.all([
-     userModel.countDocuments(),
-     userModel.countDocuments({role: 'customer'}),
-     userModel.countDocuments({role: 'dealer'}),
-     userModel.countDocuments({role: 'admin'}),
-   ])    
+  const [totalUsers, customers, dealers, admins] = await Promise.all([
+    userModel.countDocuments(),
+    userModel.countDocuments({ role: 'customer' }),
+    userModel.countDocuments({ role: 'dealer' }),
+    userModel.countDocuments({ role: 'admin' }),
+  ])
 
 
-   return{
-     totalUsers,
-     customers,
-     dealers,
-     admins
-   }
+  return {
+    totalUsers,
+    customers,
+    dealers,
+    admins
+  }
 }
