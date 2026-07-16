@@ -55,15 +55,18 @@ export const registerUser = async ({ name, email, password, role }) => {
 
 export const loginUser = async ({ email, password }) => {
 
+
   // Find the user in the database based on the provided email
-  const user = await userModel.findOne({ email })
-  
+  const user = await userModel.findOne({ email }).select('+password') // Explicitly select the password field
+
+
   if (!user) {
     throw new Error('Invalid Credentials')
   }
 
   // Compare the provided password with the hashed password stored in the database
   const isMatch = await bcrypt.compare(password, user.password)
+
 
   if (!isMatch) {
     throw new Error('Invalid Credentials')
@@ -79,7 +82,6 @@ export const loginUser = async ({ email, password }) => {
   if (user.role === "dealer" && !user.isApproved) {
     throw new Error("Your account is pending approval. Please wait for the admin to approve your account.")
   }
-
 
   // Generate a token for the authenticated user
   const token = generateToken(user._id)

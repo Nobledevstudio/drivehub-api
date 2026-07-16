@@ -173,3 +173,107 @@ export const getUserStats = async () => {
     admins
   }
 }
+
+export const getCarsStats = async () => {
+  //console.log("========== GET VEHICLE STATS SERVICE ==========");
+
+  // Collection
+  //console.log("Collection:", carModel.collection.name);
+
+  // Mongoose counts
+  const totalCars = await carModel.countDocuments();
+  //console.log("Total Cars:", totalCars);
+
+  const activeCars = await carModel.countDocuments({
+    approvalStatus: "approved",
+    status: { $ne: "sold" },
+  });
+
+  // console.log("Active Cars:", activeCars);
+
+  const pendingApproval = await carModel.countDocuments({
+    approvalStatus: "pending",
+  });
+  // console.log("Pending Count:", pendingApproval);
+
+  const soldCars = await carModel.countDocuments({
+    status: "sold",
+  });
+
+  // console.log("Sold Cars:", soldCars);
+
+  const rejectedCars = await carModel.countDocuments({
+    approvalStatus: "rejected",
+  });
+
+  //console.log("Rejected Cars:", rejectedCars);
+
+  //console.log("\n========== MONGOOSE FIND ==========");
+
+  const pendingCars = await carModel.find({
+    approvalStatus: "pending",
+  });
+
+  //console.log("Pending Cars Found:", pendingCars.length);
+  //console.log(JSON.stringify(pendingCars, null, 2));
+
+  //console.log("\n========== ALL CARS ==========");
+
+  //const allCars = await carModel.find().lean();
+
+  //console.log(JSON.stringify(allCars, null, 2));
+
+  //console.log("\n========== APPROVAL STATUS DETAILS ==========");
+
+  /*
+  allCars.forEach((car) => {
+    console.log({
+      id: car._id,
+      value: car.approvalStatus,
+      type: typeof car.approvalStatus,
+      length: car.approvalStatus?.length,
+      chars: car.approvalStatus
+        ? [...car.approvalStatus].map((c) => c.charCodeAt(0))
+        : [],
+    });
+  });
+
+  console.log("\n========== EXISTS QUERY ==========");
+
+  const exists = await carModel.find({
+    approvalStatus: { $exists: true },
+  });
+
+  console.log("Exists Count:", exists.length);
+
+  console.log("\n========== RAW MONGODB ==========");
+
+  const raw = await carModel.collection.find({}).toArray();
+
+  console.log("Raw Count:", raw.length);
+  console.log(JSON.stringify(raw, null, 2));
+
+  const rawPending = await carModel.collection.find({
+    approvalStatus: "pending",
+  }).toArray();
+
+  console.log("Raw Pending Count:", rawPending.length);
+  console.log(JSON.stringify(rawPending, null, 2));
+
+  console.log("\n========== RAW COUNT ==========");
+
+  const rawPendingCount = await carModel.collection.countDocuments({
+    approvalStatus: "pending",
+  });
+
+  console.log("Raw Pending CountDocuments:", rawPendingCount);
+*/
+
+  return {
+    totalCars,
+    activeCars,
+    pendingApproval,
+    soldCars,
+    rejectedCars,
+  };
+};

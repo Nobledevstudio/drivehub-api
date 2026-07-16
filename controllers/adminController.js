@@ -1,4 +1,4 @@
-import { approveDealer, deleteUser, getAllBookingsForAdmin, getCarsStatus, getRecentActivities, getUsers, getUserStats } from "../services/adminServices.js";
+import { approveDealer, deleteUser, getAllBookingsForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getUsers, getUserStats } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
 import { getRecentCars } from "../services/adminServices.js";
 
@@ -19,7 +19,7 @@ export const getAllBookingsForAdminController = async (req, res) => {
 export const getUsersController = async (req, res) => {
   try {
     const users = await getUsers(req.user)
-    res.status(200).json({ success: true, users})
+    res.status(200).json({ success: true, users })
 
   } catch (error) {
     res.status(400).json({ success: false, message: error.message })
@@ -150,11 +150,33 @@ export const getUserStatsController = async (req, res) => {
       message: "User statistics fetched successfully",
       data: stats,
     });
+
   } catch (error) {
-    console.error("Get User Stats Error:", error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch Userstats",
     });
   }
-};     
+};
+
+export const getCarsStatsController = async (req, res) => {
+
+  try {
+
+    const carStats = await getCarsStats()
+
+    res.status(200).json({
+      success: true,
+      message: "Cars statistics fetched successfully",
+      data: carStats
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch Carstats",
+    });
+  }
+
+}

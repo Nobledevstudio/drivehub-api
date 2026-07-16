@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // Function to connect to MongoDB
 const connectDB = async () => {
   try {
+
     // Connect to MongoDB using the connection string from environment variables
     const conn = await mongoose.connect(process.env.MONGODB_URL);
 

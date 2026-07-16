@@ -12,6 +12,8 @@ export const createCar = async({carData, user}) =>{
         dealer: user._id
     });
 
+    console.log(newCar);
+
     return newCar
 
 }
@@ -41,6 +43,7 @@ export const updateCar = async ({ carId, updateData, user }) => {
         throw new Error("Only dealers can update Cars");
     }
 
+     
     const car = await carModel.findById(carId);
 
     if (!car) {
@@ -49,7 +52,7 @@ export const updateCar = async ({ carId, updateData, user }) => {
 
     const isDealer = car.dealer.toString() === user._id.toString();
 
-  //  console.log("Dealer check:", car.dealer.toString(), user._id.toString(), "=>", isDealer);
+    console.log("Dealer check:", car.dealer.toString(), user._id.toString(), "=>", isDealer);
 
     if (!isDealer) {
         throw new Error("You are not authorized to update this car");
