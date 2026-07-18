@@ -12,7 +12,7 @@ export const registerController = async (req, res) => {
                   token,
             });
       } catch (error) {
-            res.status(400).json({ success: false, message: error.message })
+            res.status(400).json({ success: false, messssage: error.message })
       }
 }
 
