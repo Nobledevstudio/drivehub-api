@@ -1,15 +1,17 @@
 import carModel from "../models/carModel.js"
+import uploadToCloudinary from "../utils/uploadToClodinary.js";
 
 
-export const createCar = async({carData, user}) =>{
-      
-    if(!user ||!user.role === "dealer"){
-        throw new Error("Only dealers can create Cars")
+export const createCar = async ({ carData, user, images }) => {
+
+    if (!user || user.role !== "dealer") {
+        throw new Error("Only dealers can create cars.");
     }
 
-    const newCar =  await carModel.create({
+    const newCar = await carModel.create({
         ...carData,
-        dealer: user._id
+        dealer: user._id,
+        images
     });
 
     console.log(newCar);
@@ -18,21 +20,21 @@ export const createCar = async({carData, user}) =>{
 
 }
 
-export const ViewAllCar = async({}) =>{
+export const ViewAllCar = async ({ }) => {
 
     const cars = await carModel.find({})
 
     return cars
 
 }
-export const viewCarById = async({carId}) =>{
+export const viewCarById = async ({ carId }) => {
 
     const car = await carModel.findById(carId)
 
-    if(!car){
+    if (!car) {
         throw new Error("Car Not Found")
-     }
-     
+    }
+
     return car
 
 }
@@ -43,7 +45,7 @@ export const updateCar = async ({ carId, updateData, user }) => {
         throw new Error("Only dealers can update Cars");
     }
 
-     
+
     const car = await carModel.findById(carId);
 
     if (!car) {
@@ -64,19 +66,19 @@ export const updateCar = async ({ carId, updateData, user }) => {
 }
 
 
-export const deleteCar = async({carId,user})=>{
-    
-        if (!user || (user.role !== "dealer" && user.role !== "admin")) {
+export const deleteCar = async ({ carId, user }) => {
+
+    if (!user || (user.role !== "dealer" && user.role !== "admin")) {
         throw new Error("Only dealers and admins can delete cars");
-       }
+    }
 
     const car = await carModel.findById(carId);
-        
-    if(!car){
-        
-    throw new Error("Car Not Found") 
-   }
-   
+
+    if (!car) {
+
+        throw new Error("Car Not Found")
+    }
+
     const isDealer = car.dealer.toString() === user._id.toString();
 
 
@@ -88,5 +90,5 @@ export const deleteCar = async({carId,user})=>{
     const deleteCar = await carModel.findByIdAndDelete(carId)
 
     return deleteCar
-    
+
 }

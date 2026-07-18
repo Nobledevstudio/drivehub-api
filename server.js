@@ -9,8 +9,11 @@ import bookingRouter from "./routes/bookingRoute.js";
 import purchaseRouter from "./routes/purchaseRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import adminRouter from "./routes/adminRoute.js";
+import connectCloudinary from "./config/cloudinary.js";
 
 dotenv.config();
+
+connectCloudinary()
 
 const app = express();
 const PORT = process.env.PORT || 5000;
