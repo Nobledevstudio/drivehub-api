@@ -277,3 +277,17 @@ export const getCarsStats = async () => {
     rejectedCars,
   };
 };
+
+export const FectchAllCars=async(user)=>{
+
+    if (!user || user.role !== "admin") {
+        throw new Error("Unauthorized");
+    }
+
+    //console.log(user)
+
+    const cars =  await carModel.find().populate("dealer", "name email").sort({ createdAt: -1}).select("-__v");
+
+    return cars
+
+}

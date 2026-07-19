@@ -1,4 +1,4 @@
-import { approveDealer, deleteUser, getAllBookingsForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getUsers, getUserStats } from "../services/adminServices.js";
+import { approveDealer, deleteUser, FectchAllCars, getAllBookingsForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getUsers, getUserStats } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
 import { getRecentCars } from "../services/adminServices.js";
 
@@ -180,3 +180,16 @@ export const getCarsStatsController = async (req, res) => {
   }
 
 }
+export const FetchAllCarsControllers = async (req, res) => {
+
+  try {
+    const cars = await FectchAllCars( req.user)
+    console.log(req.user);
+    res.status(200).json({ success: true, data: cars })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  }
+
+}
+
