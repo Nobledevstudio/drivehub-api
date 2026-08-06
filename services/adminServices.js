@@ -14,6 +14,16 @@ export const getAllBookingsForAdmin = (user) => {
 
 }
 
+export const getAllPucharsesForAdmin = (user) => {
+  if (user.role === "admin") {
+    return purchaseModel.find({})
+      .populate("car")
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+  }
+}
+
+
 export const getUsers = async (user) => {
   if (user.role !== "admin") {
     throw new Error("Unauthorized");
@@ -278,16 +288,52 @@ export const getCarsStats = async () => {
   };
 };
 
-export const FectchAllCars=async(user)=>{
+export const FectchAllCars = async (user) => {
 
-    if (!user || user.role !== "admin") {
-        throw new Error("Unauthorized");
-    }
+  if (!user || user.role !== "admin") {
+    throw new Error("Unauthorized");
+  }
 
-    //console.log(user)
+  //console.log(user)
 
-    const cars =  await carModel.find().populate("dealer", "name email").sort({ createdAt: -1}).select("-__v");
+  const cars = await carModel.find().populate("dealer", "name email").sort({ createdAt: -1 }).select("-__v");
 
-    return cars
+  return cars
+
+}
+
+
+export const getRentalsStats = async () => {
+
+  const [completed, approved, cancelled, pending] = await Promise.all([
+    bookingModel.countDocuments({ status: 'completed' }),
+    bookingModel.countDocuments({ status: 'approved' }),
+    bookingModel.countDocuments({ status: 'cancelled' }),
+    bookingModel.countDocuments({ status: 'pending' })
+  ])
+
+  return {
+    completed,
+    approved,
+    cancelled,
+    pending
+  }
+
+}
+export const getPurchasesStats = async () => {
+
+  const [completed, approved, cancelled, pending] = await Promise.all([
+    purchaseModel.countDocuments({ status: 'completed' }),
+    purchaseModel.countDocuments({ status: 'approved' }),
+    purchaseModel.countDocuments({ status: 'cancelled' }),
+    purchaseModel.countDocuments({ status: 'pending' })
+  ])
+
+  return {
+    completed,
+    approved,
+    cancelled,
+    pending
+  }
 
 }

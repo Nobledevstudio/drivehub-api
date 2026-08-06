@@ -1,4 +1,4 @@
-import { approveDealer, deleteUser, FectchAllCars, getAllBookingsForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getUsers, getUserStats } from "../services/adminServices.js";
+import { approveDealer, deleteUser, FectchAllCars, getAllBookingsForAdmin, getAllPucharsesForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getRentalsStats, getUsers, getUserStats } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
 import { getRecentCars } from "../services/adminServices.js";
 
@@ -8,6 +8,18 @@ export const getAllBookingsForAdminController = async (req, res) => {
 
     const bookings = await getAllBookingsForAdmin(req.user);
     res.status(200).json({ success: true, data: bookings })
+
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({ success: false, message: error.message })
+  }
+}
+export const getPurchasesForAdminController = async (req, res) => {
+
+  try {
+
+    const purchases = await getAllPucharsesForAdmin(req.user);
+    res.status(200).json({ success: true, data: purchases })
 
   } catch (error) {
     console.error(error)
@@ -183,7 +195,7 @@ export const getCarsStatsController = async (req, res) => {
 export const FetchAllCarsControllers = async (req, res) => {
 
   try {
-    const cars = await FectchAllCars( req.user)
+    const cars = await FectchAllCars(req.user)
     console.log(req.user);
     res.status(200).json({ success: true, data: cars })
   } catch (error) {
@@ -191,5 +203,26 @@ export const FetchAllCarsControllers = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 
+}
+
+export const getRentalsStatsController = async (req, res) => {
+  try {
+
+    const rentalsStats = await getRentalsStats(req.user)
+    res.status(200).json({ success: true, data: rentalsStats })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+export const getPurchaesStatsController = async (req, res) => {
+  try {
+
+    const purchasesStats = await getRentalsStats(req.user)
+    res.status(200).json({ success: true, data: purchasesStats })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  }
 }
 
