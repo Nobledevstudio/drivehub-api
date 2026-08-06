@@ -76,13 +76,7 @@ export const cancelPurchase = async (purchaseId, userId) => {
 
 
 export const viewPurchases = (user) => {
-  // If admin, return all purchases
-  if (user.role === "admin") {
-    return purchaseModel.find({})
-      .populate("car")
-      .populate("user", "name email");
-  }
-
+    
   // Otherwise, if dealer, return only their purchases
   return purchaseModel.find({ dealer: user._id })
     .populate("car")
