@@ -1,7 +1,7 @@
 import express from 'express'
 import { protect } from '../middleware/protect.js'
 import { authorizeRoles } from '../middleware/authorizeRole.js'
-import { approveDealerController, deleteUserContoller, fetchCarStatusController, fetchAdminDashboardStatsController, getAllBookingsForAdminController, getUsersController, fetchRecentActivitiesController, getRecentCarsController, getUserStatsController, getCarsStatsController, FetchAllCarsControllers, getRentalsStatsController, getPurchasesForAdminController, getPurchaesStatsController } from '../controllers/adminController.js'
+import { approveDealerController, deleteUserContoller, fetchCarStatusController, fetchAdminDashboardStatsController, getAllBookingsForAdminController, getUsersController, fetchRecentActivitiesController, getRecentCarsController, getUserStatsController, getCarsStatsController, FetchAllCarsControllers, getRentalsStatsController, getPurchasesForAdminController, getPurchaesStatsController, getBookingsForAdminController } from '../controllers/adminController.js'
 import { getRentalsStats } from '../services/adminServices.js'
 
 const adminRouter = express.Router()
@@ -19,6 +19,8 @@ adminRouter.get("/users/stats", protect, authorizeRoles('admin'),getUserStatsCon
 adminRouter.get("/cars/stats", protect, authorizeRoles('admin'),getCarsStatsController);
 adminRouter.get("/cars", protect, authorizeRoles('admin'), FetchAllCarsControllers);
 adminRouter.get("/bookings/stats", protect, authorizeRoles('admin'), getRentalsStatsController);
+adminRouter.get("/bookings", protect, authorizeRoles('admin'), getBookingsForAdminController);
 adminRouter.get("/purchases/stats", protect, authorizeRoles('admin'), getPurchaesStatsController);
+adminRouter.get("/purchases", protect, authorizeRoles('admin'), getPurchasesForAdminController);
 
 export default adminRouter

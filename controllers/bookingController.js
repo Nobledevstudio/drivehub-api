@@ -53,10 +53,10 @@ export const cancelBookingController=async(req,res)=>{
 
 export const getBookingsForDealerController = async (req, res) => {
     try {
+           
         const bookings = await getBookingsForDealer(req.user);
         res.json({ success: true, bookings });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }
 }
-
