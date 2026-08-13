@@ -1,4 +1,4 @@
-import { approveDealer, deleteUser, FectchAllCars, getAllBookingsForAdmin, getAllPucharsesForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getRentalsStats, getUsers, getUserStats } from "../services/adminServices.js";
+import { approveDealer, deleteUser, FectchAllCars, getAdminPurchases, getAllBookingsForAdmin, getAllPucharsesForAdmin, getBookingsForAdmin, getCarsStats, getCarsStatus, getRecentActivities, getRentalsStats, getUsers, getUserStats } from "../services/adminServices.js";
 import { getAdminDashboardStats } from "../services/adminServices.js";
 import { getRecentCars } from "../services/adminServices.js";
 
@@ -8,18 +8,6 @@ export const getAllBookingsForAdminController = async (req, res) => {
 
     const bookings = await getAllBookingsForAdmin(req.user);
     res.status(200).json({ success: true, data: bookings })
-
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({ success: false, message: error.message })
-  }
-}
-export const getPurchasesForAdminController = async (req, res) => {
-
-  try {
-
-    const purchases = await getAllPucharsesForAdmin(req.user);
-    res.status(200).json({ success: true, data: purchases })
 
   } catch (error) {
     console.error(error)
@@ -225,4 +213,24 @@ export const getPurchaesStatsController = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
+
+export const getBookingsForAdminController = async (req, res) => {
+    try {
+        const bookings = await getBookingsForAdmin(req.user);
+        res.json({ success: true, bookings });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+}
+export const getPurchasesForAdminController = async (req, res) => {
+    try {
+            console.log(req.user);
+        const purchases = await getAdminPurchases(req.user);
+        res.json({ success: true, purchases });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+}
+
 

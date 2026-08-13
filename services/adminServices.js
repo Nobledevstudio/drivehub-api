@@ -337,3 +337,33 @@ export const getPurchasesStats = async () => {
   }
 
 }
+
+export const getBookingsForAdmin = (user) => {
+
+  if (user.role === "admin") {
+
+    return bookingModel.find({})
+      .populate("car")
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+
+  }
+};
+
+
+export const getAdminPurchases = async (user) => {
+
+
+  if (user.role === "admin") {
+    const purchases = await purchaseModel
+      .find({}).populate("car")
+      .populate("user", "name email")
+      .populate("dealer", "name email")
+      .sort({ createdAt: -1 })
+
+
+    return purchases
+  }
+
+
+}
