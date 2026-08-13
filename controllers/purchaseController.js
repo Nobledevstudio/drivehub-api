@@ -42,7 +42,7 @@ export const cancelPurchaseController=async(req,res)=>{
 
 export const ViewPurchasesController = async (req, res) => {
     try {
-        const purchases = await viewPurchases(req.user);
+        const purchases = await viewPurcshases(req.user);
         res.json({ success: true, purchases });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
