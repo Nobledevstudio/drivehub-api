@@ -10,6 +10,7 @@ import purchaseRouter from "./routes/purchaseRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import adminRouter from "./routes/adminRoute.js";
 import connectCloudinary from "./config/cloudinary.js";
+import dealerRouter from "./routes/dealerRoute.js";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use("/api/bookings", bookingRouter);
 app.use("/api/purchases", purchaseRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/admin", adminRouter);
+app.use('/api/dealer',  dealerRouter)
 
 // Server
 const startServer = async () => {
